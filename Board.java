@@ -16,7 +16,7 @@ public class Board{
 
 
 // method to print the board. This will be used each time a new counter is added to the board
-  public static void printBoard(){
+  public void printBoard(){
 		for(int row = 0; row < rows; row++){
       System.out.print("|");
 			for(int col = 0; col < columns ; col++){
@@ -24,7 +24,7 @@ public class Board{
           System.out.print("_");
         }
         else {
-          System.out.print(myboard[row][col].getPlayer());
+          System.out.print(myboard[row][col].getCounter());
         } 
       System.out.print("|");
 		  }
@@ -35,8 +35,8 @@ public class Board{
   }
 
 
-  // this is a method to check if counters have been placed or not 
-  public boolean place(int colPlaced, String player){
+  // this is a method to place counters and check if counters have been placed or not 
+  public boolean placeCounter(int colPlaced, char counter){
     if(colPlaced >= 0 && colPlaced < columns - 1){
     
       if(myboard[0][colPlaced] == null){
@@ -44,7 +44,7 @@ public class Board{
         for(int row = rows -1; row >= 0; row--) {
           if(myboard[row][colPlaced] == null){
             myboard[row][colPlaced] = new Counter();
-            myboard[row][colPlaced].setPlayer(player);
+            myboard[row][colPlaced].setCounter(counter);
             placed = true;
             break;
           }
@@ -59,9 +59,63 @@ public class Board{
     else{
       System.out.println (" Cannot place counter there");
       return false;
-      }
+      } 
+  }
 
-    
+    // check for win
+  public boolean hasWon(Counter player){
+    return checkVertical(player) || checkHorizontal(player) || checkDiagonal(player);
+  }
+
+  private boolean checkVertical(Counter player){
+    for(int row = 0; row < rows; row++){
+      boolean allMatch = true;
+      for(int col = 0; col < columns; col++){
+        allMatch = allMatch && (myboard[row][col]== player);
+      }
+      if(allMatch){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean checkHorizontal(Counter player){
+    for(int row = 0; row < rows; row++){
+      boolean allMatch = true;
+      for(int col = 0; col < columns ; col++){
+        allMatch = allMatch && (myboard[row][col]==player);
+      }
+      if(allMatch){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean checkDiagonal(Counter player){
+    // top-left
+    int row = 0;
+    int col = 0;
+    boolean allMatch = true;
+    while(row < rows && col < columns){
+      allMatch = allMatch && (myboard[row][col]==player);
+      row++;
+      col++;
+    }
+    if(allMatch){
+      return true;
+    }
+
+    row = 0;
+    col = myboard[row].length-1;
+    allMatch = true;
+    while(row < rows && col >= 0){
+      allMatch = allMatch && (myboard[row][col]==player);
+      row++;
+      col--;
+    }
+    return allMatch;
   }
 
 }

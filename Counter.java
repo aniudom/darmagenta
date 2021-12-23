@@ -1,13 +1,13 @@
 
 public class Counter{
-   private String player;
+   private char c;
 
-   public String getPlayer(){
-    return player;
+   public char getCounter(){
+    return c;
   }
-
-   public void setPlayer(String player){
-    this.player = player;
+  
+   public void setCounter(char counter){
+    this.c = c;
   }
 }
 
